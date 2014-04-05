@@ -1,7 +1,7 @@
 function [pic,macierz]=ukryj(im)
-im=double(im);
+
 wim=rgb2gray(im);
-[LPLP,LPHP,HPLP,HPHP]=dwt2(uint8(wim),'db2');
+LPLP=dwt2(uint8(wim),'db1');
 
 
 [m,n]=size(LPLP);
@@ -14,6 +14,7 @@ for i=1:1:m
     end
 end
 pic=bitxor(uint8(LPLP),uint8(macierz));
-imshow((pic));
+%pic1=bitxor(pic,uint8(macierz)); rekonstrukcja
+%imshow(pic1); rekonstrukcja
 imwrite(pic,'szum.jpg','jpg');
 
