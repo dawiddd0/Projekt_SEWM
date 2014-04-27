@@ -1,5 +1,5 @@
 %Wczytanie zdjêcia
-X=imread('john.jpg');
+X=imread('photo.jpg');
 macierz_przewidywana=Losowanie();
 colormap gray;
 imagesc(X)
@@ -54,7 +54,7 @@ for i=1:8:(rozmiar-8)
                 X(i:i+8-1,j:j+8-1) = idct(X(i:i+8-1,j:j+8-1));
     end
 end
-imwrite(uint8(X),'john2.jpg');
+imwrite(uint8(X),'photo2.jpg');
 
 
 [psnr,mse,maxerr,l2rat] = measerr(double(X),X);
