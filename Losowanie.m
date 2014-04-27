@@ -1,7 +1,8 @@
 %wybranie 10 losowych bitów
 
 function [ RandX ] = Losowanie(  )
-seed = 12356;  % ziarno
+seed = 93450;  % ziarno
+rng(seed);
 step = 8;
 RandX = zeros(step);
 ilosc = 0;
