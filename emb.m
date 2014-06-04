@@ -1,24 +1,29 @@
 function []=emb()
-im=imread('photo.jpg');
-[szum,k,l]=ukryj(im);
+im=imread('Biel.jpg');
+[szum]=ukryj(im);
 pic=kodowanie(im,szum);
-%pic=(imread('popsuta.jpg'));
-pic1=dekodowanie(pic,k,l);
+pic=(imread('popsuta.jpg'));
+%pic(100:200,100:200)=0;
+pic1=dekodowanie(pic);
 [pic2,V,H,D]=dwt2(pic,'haar');
-%pic2=rgb2ntsc(pic2);
-%pic2=rgb2gray(pic2);
+
+pic2=rgb2gray(pic2);
 pic2=dither(pic2);
 figure(2)
 imshow((pic1-pic2));
 
 
-function [pic1]=dekodowanie(im,k,l)
-%im=rgb2ntsc(im);
-%im=rgb2gray(im);
+function [pic1]=dekodowanie(im)
+im=rgb2gray(im);
 [A,V,H,D]=dwt2(im,'haar');
 wektor=min(min(A)):5:max(max(A));
 [m,n]=size(A);
 szum=zeros(m,n);
+
+s = RandStream('mt19937ar','Seed',0);
+k=randperm(s,m); %przygotowanie permutacji
+s = RandStream('mt19937ar','Seed',0);
+l=randperm(s,n);
 for i=1:m
     for j=1:n
         if (rem(A(i,j),10)>3.5 && rem(A(i,j),10)<6.5)
@@ -114,7 +119,7 @@ end
 pic=idwt2(double(Aemb),V,H,D,'haar'); %scalenie nowej macierzy A w jeden obrazek
 imshow(uint8(pic));
 imwrite(uint8(pic),'zakodowany.jpg','jpg');
-function [picperm,k,l]=ukryj(im)
+function [picperm]=ukryj(im)
 im=rgb2ntsc(im);
 im=rgb2gray(im);
 im=dither(im);
@@ -124,8 +129,10 @@ im=dither(im);
 [m,n]=size(LPLP);
 macierz=losowanie(m,n);
 pic=xor((LPLP),(macierz)); %XOR macierzy i dolnoprzepustowej sk³adowej dekompozycji falkowej
-k=randperm(m); %przygotowanie permutacji
-l=randperm(n);
+s = RandStream('mt19937ar','Seed',0);
+k=randperm(s,m); %przygotowanie permutacji
+s = RandStream('mt19937ar','Seed',0);
+l=randperm(s,n);
 picperm=zeros(m,n);
 for i=1:m     %wykonanie permutacji
    for j=1:n

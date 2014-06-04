@@ -2,7 +2,7 @@
 
 function [ RandX ] = Losowanie(  )
 seed = 93450;  % ziarno
-rng(seed);
+%rng(seed);
 step = 8;
 RandX = zeros(step);
 ilosc = 0;
