@@ -22,7 +22,7 @@ function varargout = projektGUI(varargin)
 
 % Edit the above text to modify the response to help projektGUI
 
-% Last Modified by GUIDE v2.5 04-Jun-2014 20:23:26
+% Last Modified by GUIDE v2.5 07-Jun-2014 16:49:06
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,7 +54,8 @@ function projektGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for projektGUI
 handles.output = hObject;
-
+handles.jest=0;
+handles.tryb=0;
 % Update handles structure
 guidata(hObject, handles);
 
@@ -77,112 +78,23 @@ varargout{1} = handles.output;
 
 
 % --- Executes on button press in radiobutton1.
-function radiobutton3_Callback(hObject, eventdata, handles)
+function Koder_Callback(hObject, eventdata, handles)
 % hObject    handle to radiobutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if(a==1.0)
+get(hObject,'Value');
     handles.tryb=0;
-end
 guidata(hObject, handles);
 % Hint: get(hObject,'Value') returns toggle state of radiobutton1
 
 
 % --- Executes on button press in radiobutton2.
-function radiobutton4_Callback(hObject, eventdata, handles)
+function Dekoder_Callback(hObject, eventdata, handles)
 % hObject    handle to radiobutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if(a==1.0)
     handles.tryb=1;
-end
-guidata(hObject, handles);
-% Hint: get(hObject,'Value') returns toggle state of radiobutton2
-function radiobutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if a==1
-    handles.krok=6;
-    guidata(hObject, handles);
-end
 
-function radiobutton6_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if a==1
-    handles.krok=8;
-    guidata(hObject, handles);
-end
-
-function radiobutton7_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if a==1
-    handles.krok=10;
-    guidata(hObject, handles);
-end
-
-function radiobutton8_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if a==1
-    handles.krok=12;
-end
-guidata(hObject, handles);
-function radiobutton9_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if a==1
-    handles.krok=15;
-end
-guidata(hObject, handles);
-function radiobutton10_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if a==1
-    handles.krok=19;
-end
-guidata(hObject, handles);
-function radiobutton11_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if a==1
-    handles.krok=22;
-end
-guidata(hObject, handles);
-function radiobutton12_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if a==1
-    handles.krok=30;
-end
-guidata(hObject, handles);
-function radiobutton13_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-a=get(hObject,'Value');
-if a==1
-    handles.krok=26;
-end
 guidata(hObject, handles);
 % --- Executes on key press with focus on radiobutton2 and none of its controls.
 
@@ -198,7 +110,16 @@ function pushbutton3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [filename,filepath]=uigetfile('*.jpg');
-handles.file=fullfile(filepath, filename);
+if(filename~=0)
+    handles.file=fullfile(filepath, filename);
+else
+    while(filename==0)
+    warning('Wybierz plik');
+    [filename,filepath]=uigetfile('*.jpg');
+    handles.file=fullfile(filepath, filename);
+    end
+end
+handles.jest=1;
 guidata(hObject, handles);
 
 
@@ -208,6 +129,7 @@ function edit1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.edit1=get(hObject,'String');
+guidata(hObject, handles);
 % Hints: get(hObject,'String') returns contents of edit1 as text
 %        str2double(get(hObject,'String')) returns contents of edit1 as a double
 
@@ -228,9 +150,17 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 guidata(hObject, handles);
+filename=0;
+disp(handles)
+handles.krok=double(handles.text5);
+while(filename==0 & handles.jest==0)
+    warning('Wybierz plik');
+    [filename,filepath]=uigetfile('*.jpg');
+    handles.file=fullfile(filepath, filename);
+    
+end    
+pic=ckuf(handles.file,handles.krok,get(handles.Dekoder,'Value'),get(handles.edit1,'String'),get(handles.radiobutton15,'Value'));
 
-
-ckuf(handles.file,6,handles.tryb,handles.edit1);
 
 
 % --- Executes on slider movement.
@@ -239,7 +169,9 @@ function slider1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 k=get(hObject,'Value');
+handles.krok=k;
 set(handles.text5,'String',num2str(k));
+guidata(hObject, handles);
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 
@@ -260,5 +192,33 @@ end
 % --- Otherwise, executes on mouse press in 5 pixel border or over slider1.
 
 
+% --- Executes during object creation, after setting all properties.
+function text5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to text5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
 
 
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over text5.
+function text5_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to text5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes during object deletion, before destroying properties.
+function text5_DeleteFcn(hObject, eventdata, handles)
+% hObject    handle to text5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in radiobutton15.
+function radiobutton15_Callback(hObject, eventdata, handles)
+% hObject    handle to radiobutton15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    handles.tryb=2;
+guidata(hObject, handles);
+% Hint: get(hObject,'Value') returns toggle state of radiobutton15

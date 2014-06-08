@@ -22,7 +22,7 @@ function varargout = projektGUI(varargin)
 
 % Edit the above text to modify the response to help projektGUI
 
-% Last Modified by GUIDE v2.5 04-Jun-2014 20:51:12
+% Last Modified by GUIDE v2.5 08-Jun-2014 16:43:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,7 +54,8 @@ function projektGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for projektGUI
 handles.output = hObject;
-
+handles.jest=0;
+handles.tryb=0;
 % Update handles structure
 guidata(hObject, handles);
 
@@ -81,10 +82,7 @@ function Koder_Callback(hObject, eventdata, handles)
 % hObject    handle to radiobutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-a=str2double(get(hObject,'Value'));
-if a==1.0
-    handles.tryb=0;
-end
+handles.tryb=0;
 guidata(hObject, handles);
 % Hint: get(hObject,'Value') returns toggle state of radiobutton1
 
@@ -94,10 +92,7 @@ function Dekoder_Callback(hObject, eventdata, handles)
 % hObject    handle to radiobutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-a=str2double(get(hObject,'Value'));
-if(a==1.0)
-    handles.tryb=1;
-end
+handles.tryb=1;
 guidata(hObject, handles);
 % --- Executes on key press with focus on radiobutton2 and none of its controls.
 
@@ -113,7 +108,16 @@ function pushbutton3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [filename,filepath]=uigetfile('*.jpg');
-handles.file=fullfile(filepath, filename);
+if(filename~=0)
+    handles.file=fullfile(filepath, filename);
+else
+    while(filename==0)
+    warning('Wybierz plik');
+    [filename,filepath]=uigetfile('*.jpg');
+    handles.file=fullfile(filepath, filename);
+    end
+end
+handles.jest=1;
 guidata(hObject, handles);
 
 
@@ -123,6 +127,7 @@ function edit1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.edit1=get(hObject,'String');
+guidata(hObject, handles);
 % Hints: get(hObject,'String') returns contents of edit1 as text
 %        str2double(get(hObject,'String')) returns contents of edit1 as a double
 
@@ -143,9 +148,16 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 guidata(hObject, handles);
-
-
-pic=ckuf(handles.file,str2double(get(handles.text5,'String')),get(handles.Dekoder,'Value'),get(handles.edit1,'String'));
+filename=0;
+disp(handles)
+handles.krok=double(handles.text5);
+while(filename==0 & handles.jest==0)
+    warning('Wybierz plik');
+    [filename,filepath]=uigetfile('*.jpg');
+    handles.file=fullfile(filepath, filename);
+    
+end    
+pic=ckuf(handles.file,handles.krok,handles.tryb,handles.edit1);
 
 
 
@@ -176,3 +188,35 @@ end
 
 % --- If Enable == 'on', executes on mouse press in 5 pixel border.
 % --- Otherwise, executes on mouse press in 5 pixel border or over slider1.
+
+
+% --- Executes during object creation, after setting all properties.
+function text5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to text5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over text5.
+function text5_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to text5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes during object deletion, before destroying properties.
+function text5_DeleteFcn(hObject, eventdata, handles)
+% hObject    handle to text5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in Roznica.
+function Roznica_Callback(hObject, eventdata, handles)
+% hObject    handle to Roznica (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.tryb=2;
+guidata(hObject, handles);
+% Hint: get(hObject,'Value') returns toggle state of Roznica
