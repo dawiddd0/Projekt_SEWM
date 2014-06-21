@@ -8,18 +8,22 @@ step = 8;   % skok
 N = size(X,1);
 ref = double(X);
 
-scalar = 0.13;
+
 %% B³¹d jeœli niewymiarowy obrazek
 if size(X,1) ~= size(X,2) && mod(size(X,1),8) ~= 0
   %  Disp('Wrong input');
     error('No way');
 end
 %% Jeœli nie,dawaj dalej
+scalar = 0.13;
 X2 = double(X);
 X = double(X);
 Y = zeros(N);
-
-[ RandX, przesX,przesY,qim] = GenerateRandX;
+przesX=32;
+przesY=64;
+qim=5;
+seed=23652;
+[RandX] = GenerateRandX(seed);
 
 for i=1:step:N
     for j=1:step:N

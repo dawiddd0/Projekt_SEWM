@@ -25,7 +25,11 @@ a2 = 2.2;
 a3 = 2.2;
 a4 = 2.1;
 
-[ RandX, przesX,przesY,qim] = GenerateRandX;
+przesX=32;
+przesY=32;
+qim=5;
+seed=23652;
+[RandX] = GenerateRandX(seed);
 
 for i=1:step:N
     for j=1:step:N
@@ -65,10 +69,9 @@ for i=1:step:N
 end
 stat
 colormap gray;
-imshow(uint8(X-Y));
+imagesc(Y)
 
-%imagesc(X-Y)
-imwrite(uint8(X-Y),'odzyskana.jpg');
+imwrite(uint8(Y),'odzyskana.jpg');
 
 [PSNR,MSE,MAXERR,L2RAT] = measerr(ref,Y);
 PSNR
