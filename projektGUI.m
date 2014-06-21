@@ -149,7 +149,6 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 guidata(hObject, handles);
 filename=0;
-disp(handles)
 handles.krok=double(handles.text5);
 while(filename==0 & handles.jest==0)
     warning('Wybierz plik');
