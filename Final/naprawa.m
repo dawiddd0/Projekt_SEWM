@@ -63,9 +63,9 @@ end
 
 figure,
 colormap gray;
-%imagesc(uint8(Y))
-imshow(uint8(Y));
-imwrite(Y,'odzyskana.jpg','jpg','Quality',100);
+imagesc(uint8(Y))
+%imshow(uint8(Y));
+%imwrite(Y,'odzyskana.jpg','jpg','Quality',100);
 %[psnr,mse,maxerr,l2rat] = measerr(odniesienie,Y)
 end
 
