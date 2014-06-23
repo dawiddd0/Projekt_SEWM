@@ -1,55 +1,19 @@
-%wybranie 10 losowych bitów
+function [ macierzLosowa ] = Losowanie( seed )
 
-function [ RandX ] = Losowanie(  )
-seed = 93450;  % ziarno
-%rng(seed);
-step = 8;
-RandX = zeros(step);
-ilosc = 0;
-while ilosc < 6
-    x = randi(step);
-    y = randi(step);
-    if RandX(x,y) ~= 1
-        RandX(x,y) = 1;
-        ilosc = ilosc + 1;
-    end
+rng(seed);	 % klucz autoryzacji
+macierzLosowa = zeros(8,8); % pusty blok 8x8
+wartosci = randi(8,10,2);
+%% 4 dla autentykacji
+for i = 1:4
+	macierzLosowa(wartosci(i,1),wartosci(i,2)) = 2;
 end
-ilosc = 0;
-while ilosc < 1
-    x = randi(step/2);
-    y = randi(step/2);
-    if RandX(x,y) == 0
-        RandX(x,y) = 2;
-        ilosc = ilosc + 1;
-    end
+
+%% 6 dla rekonstrukcji
+for i = 5:10
+	if macierzLosowa(wartosci(i,1),wartosci(i,2)) == 0
+		macierzLosowa(wartosci(i,1),wartosci(i,2)) = 1;
+	end
 end
-ilosc = 0;
-while ilosc < 1
-    x = randi(step/2);
-    y = randi(step/2)+4;
-    if RandX(x,y) == 0
-        RandX(x,y) = 2;
-        ilosc = ilosc + 1;
-    end
-end
-ilosc = 0;
-while ilosc < 1
-    x = randi(step/2)+4;
-    y = randi(step/2);
-    if RandX(x,y) == 0
-        RandX(x,y) = 2;
-        ilosc = ilosc + 1;
-    end
-end
-ilosc = 0;
-while ilosc < 1
-    x = randi(step/2)+4;
-    y = randi(step/2)+4;
-    if RandX(x,y) == 0
-        RandX(x,y) = 2;
-        ilosc = ilosc + 1;
-    end
-end
-RandX;
+
 end
 

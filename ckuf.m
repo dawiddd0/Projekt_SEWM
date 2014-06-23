@@ -58,7 +58,10 @@ w=fspecial('gaussian');
 pic21=imfilter((pic2),w);
 
 function [pic]=kodowanie(im,szum,krok)
+[a,b,c]=size(im);
+if a==3 | b==3 | c==3
 im=rgb2gray(im);
+end
 [A,V,H,D]=dwt2(im,'haar');
 [m,n]=size(A);
 Aemb=A; %Aemb macierz A, do ktrej zostanie dodany payload
@@ -76,9 +79,13 @@ end
 pic=idwt2(double(Aemb),V,H,D,'haar'); %scalenie nowej macierzy A w jeden obrazek
 imshow(uint8(pic));
 imwrite(uint8(pic),'zakodowany.jpg','jpg');
+[psnr] = measerr(uint8(pic),double(pic))
 function [picperm]=ukryj(im)
+[a,b,c]=size(im);
+if a==3 | b==3 | c==3
 im=rgb2ntsc(im);
 im=rgb2gray(im);
+end
 im=dither(im);
 %imshow(im);
 [LPLP,LPHP,HPLP,HPHP]=dwt2(im,'haar'); %dekompozycja falkowa
