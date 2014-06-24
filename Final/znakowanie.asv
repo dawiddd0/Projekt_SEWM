@@ -31,7 +31,7 @@ for i=1:krok:N
 end  
 
 tymczasoweX = zeros(4,1); % pomoc w tworzeniu tymczasowych bloków 4x4 i ich normalizaji
-[ X_przes,Y_przes ] = losowanie_skladnikow(seed_permutacji,N/krok,M/krok )  ;      
+[ X_przes,Y_przes ] = losowanie_skladnikow( seed_permutacji,N/krok,M/krok )  ;      
 for i=1:krok:N
     for j=1:krok:N
         %% normalizacja bloków 4x4
