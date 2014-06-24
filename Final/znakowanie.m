@@ -18,9 +18,7 @@ X2 = double(X);
 X = double(X);
 Y = zeros(N,M);
 
-%skalar = 0.13;
-%qim=5;
-%seed=924364;
+
 [macierzLosowa] = Losowanie(seed);
 
 %% transformata kosinusowa do ka¿dego bloku 
@@ -44,8 +42,8 @@ for i=1:krok:N
             for l = 1:krok
                 % znakowanie dla autentykacji i rekonstrukcji
                  if macierzLosowa(k,l) == 2
-                     posX = (X_przes(floor((i/krok)+1)-1)*krok + k;
-                     posY = (Y_przes(floor((j/krok)+1)-1)*krok + 1;
+                     posX = (X_przes(floor(i/krok)+1)-1)*krok + k ;
+                     posY = (Y_przes(floor(j/krok)+1)-1)*krok + l ;
                      Y(posX,posY) = tymczasoweX(q);
                      q = q + 1;              
                  elseif macierzLosowa(k,l) == 1

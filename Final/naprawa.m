@@ -1,17 +1,19 @@
-function [  ] = naprawa(X,skalar,qim,seed)
+function [  ] = naprawa(X,skalar,qim,seed,seed_permutacji)
 X=imread(X);
 
+seed_permutacji=22432;
 %X = imread('lenaPrzerobiona.jpg'); %Wczytuje obrazek 
 
 odniesienie = double(X);  %Odniesienie do zdjêcia w celu wyznaczenia PSNR
 X = double(X);
 
-N = size(X,1); % rozmiar
-Y = zeros(N);
+[N,M] = size(X); % rozmiar
+
+
 krok = 8; 
-%skalar = 0.13;
+Y = zeros(N,M);
 Z = zeros(8,8); %macierz do odczytu znaku wodnego
-U = zeros(N); % pomocna macierz przy dct
+U = zeros(N,M); % pomocna macierz przy dct
 
 %wspó³czynniki
 a1 = 2;
@@ -19,9 +21,6 @@ a2 = 2.2;
 a3 = 2.2;
 a4 = 2.1;
 
-
-%qim=5; 
-%seed=924364;
 [macierzLosowa] = Losowanie(seed);
 
 %% Transformata dct do ka¿dego bloku
@@ -31,17 +30,19 @@ for i=1:krok:N
     end
 end
 tymczasoweX = zeros(4,1);
-stat = 6;
+[ X_przes Y_przes ] = losowanie_skladnikow(seed_permutacji,N/krok,M/krok )  ; 
+
+%stat = 6;
 for i=1:krok:N
-    for j=1:krok:N
+    for j=1:krok:M
       il = 0;
       q = 1;
       for k = 1:krok
            for l = 1:krok                 
               if macierzLosowa(k,l) == 2
-                 pozycjaX = mod(i + k - 1,N) + floor((i + k - 1 )/N);
-                 pozycjaY = mod(j + l - 1,N) + floor((j + l - 1 )/N);
-                 tymczasoweX(q) = U(pozycjaX,pozycjaY)/skalar;
+                 posX = (X_przes(floor(i/krok)+1)-1) * krok + k;
+                 posY = (Y_przes(floor(j/krok)+1)-1) * krok + l;
+                 tymczasoweX(q) = U(posX,posY)/skalar;
                  q = q + 1;
               else
                  a = mod(U(i+k-1,j+l-1),2*qim);
@@ -51,12 +52,17 @@ for i=1:krok:N
               end
            end
       end        
-      stat = (stat + il)/2;
+      if il>6
       Z(1,1) = a1*(sum(tymczasoweX));
       Z(1,2) = a2*(tymczasoweX(1) - tymczasoweX(2) + tymczasoweX(3) - tymczasoweX(4));
       Z(2,1) = a3*(tymczasoweX(1) + tymczasoweX(2) - tymczasoweX(3) - tymczasoweX(4));
       Z(2,2) = a4*(tymczasoweX(1) - tymczasoweX(2) - tymczasoweX(3) + tymczasoweX(4));
       Z = idct2(Z);
+      else
+        Z = U(i:i+krok-1,j:j+krok-1);
+		Z = idct2(Z);
+      end
+          
       Y(i:i+krok-1,j:j+krok-1) = Z;
       Z(:,:) = 0;
     end
@@ -67,6 +73,6 @@ colormap gray;
 imagesc(uint8(Y))
 %imshow(uint8(Y));
 %imwrite(Y,'odzyskana.jpg','jpg','Quality',100);
-%[psnr,mse,maxerr,l2rat] = measerr(odniesienie,Y)
+[psnr] = measerr(odniesienie,Y)
 end
 

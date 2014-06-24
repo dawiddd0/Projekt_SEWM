@@ -1,5 +1,5 @@
 function [pic]=ckuf(file,krok,tryb,save)
-krok=14;
+krok=35;
 im=imread(file);
 j='.jpg';
 save=[save j];
